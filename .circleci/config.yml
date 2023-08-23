@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+  build:
+    machine: true
+    steps:
+    - run:
+        name: Retrive logs
+        command: journalctl -f --no-pager
+        background: true
+    - run:
+        name: process record 
+        command: |
+          while true; do
+            date
+            ps auxwwf
+            echo "======"
+          done
+        background: true
+    - run:
+        name: Build a really docker image
+        command: |
+          dockerfile=Dockerfile
+          echo "FROM ubuntu:latest" > $dockerfile
+          echo "RUN mkdir momo" >> $dockerfile
+          echo "RUN echo hello" >> $dockerfile
+          echo "RUN apt-get update && apt-get upgrade -y && apt-get full-upgrade -y && apt-get install -y build-essential git curl netcat" >> $dockerfile
+          echo "RUN echo hello run it again" >> $dockerfile
+          echo "RUN apt-get update && apt-get upgrade -y && apt-get full-upgrade -y && apt-get install -y build-essential git curl netcat" >> $dockerfile
+          docker build -f $dockerfile --tag throwaway:$CIRCLE_BUILD_NUM .
