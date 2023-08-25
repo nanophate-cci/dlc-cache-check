@@ -5,6 +5,7 @@ jobs:
     docker:
     - image: cimg/base:stable
     steps:
+    - run: ip link show tun0
     - run:
         name: process record 
         command: |
