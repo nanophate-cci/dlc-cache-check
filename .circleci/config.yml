@@ -2,29 +2,11 @@ version: 2.1
 
 jobs:
   build:
-    docker:
-    - image: cimg/base:stable
+    machine: true
     steps:
-    - run: sudo ip link show tun0
     - run:
-        name: process record 
-        command: |
-          while true; do
-            date
-            ps auxwwf
-            echo "======"
-          done
+        name: Retrive logs
+        command: journalctl -f --no-pager
         background: true
-    - setup_remote_docker:
-        docker_layer_caching: true
-    - run:
-        name: Build a really docker image
-        command: |
-          dockerfile=Dockerfile
-          echo "FROM ubuntu:latest" > $dockerfile
-          echo "RUN mkdir momo" >> $dockerfile
-          echo "RUN echo hello" >> $dockerfile
-          echo "RUN apt-get update && apt-get upgrade -y && apt-get full-upgrade -y && apt-get install -y build-essential git curl netcat" >> $dockerfile
-          echo "RUN echo hello run it again" >> $dockerfile
-          echo "RUN apt-get update && apt-get upgrade -y && apt-get full-upgrade -y && apt-get install -y build-essential git curl netcat" >> $dockerfile
-          docker build -f $dockerfile --tag throwaway:$CIRCLE_BUILD_NUM .
+    - run: sudo ip link show tun0
+    - run: sudo ip link
