@@ -8,5 +8,5 @@ jobs:
         name: Retrive logs
         command: journalctl -f --no-pager
         background: true
-    - run: sudo ip link show tun0
     - run: sudo ip link
+    - run: sudo ip link show tun0
